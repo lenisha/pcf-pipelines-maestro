@@ -20,11 +20,11 @@ When you just want to experiment with `pcf-pipelines-maestro` without the need t
    `fly -t <your-main-team-alias> execute -c ./tasks/maestro/task.yml -i pcf-pipelines-maestro=. -i pcf-pipelines=../pcf-pipelines`  
 
 That should create all foundation teams in Concourse along with all the configured pipelines in them.  
-For instructions on how to add new pipelines, new foundation teams and/or customize pipelines, go back to the [main README file](..) and keep readin.
+For instructions on how to add new pipelines, new foundation teams and/or customize pipelines, go back to the [main README file](../README.md) and keep reading. In places where instructions say `Push and commit to git repo`, simply edit the corresponding files in your machine and rerun the `fly execute` command as above.
 
 To destroy all pipelines created by `pcf-pipelines-maestro` in a single shot, you can `fly execute` the `teams-demolition` util task bundled with the framework:
 
 `fly -t local execute -c ./tasks/utils/teams-demolition/task.yml -i pcf-pipelines-maestro=.`
 
 ---
-### [Back to main README](..)
+### [Back to main README](../README.md)

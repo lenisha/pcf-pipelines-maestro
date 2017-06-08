@@ -23,7 +23,7 @@ The Maestro main pipeline iterates through the `foundations` folder's config fil
 ---
 ### How to setup and run the main Maestro pipeline in Concourse  
 
-_For quick tests in development environments (with no need to fork Maestro repo), refer to the [Configure Maestro in a Test Environment](./docs/Test-Environment-Setup.md) document. For official deployments, please follow the instructions below._
+_For quick tests in development environments (with no need to fork Maestro repo), refer to the [Configure Maestro in a Test Environment](./docs/Test-Environment-Setup.md) document. For any other environments, please follow the instructions below._
 
 1. Fork the **Maestro** git project  https://github.com/pivotalservices/pcf-pipelines-maestro into your own git repository  
 
@@ -104,7 +104,7 @@ To enable an out-of-the-box pipeline customization rule:
 1. Re-run the `pcf-pipelines-maestro` pipeline to regenerate all upgrade pipelines in Concourse.
 
 
-  
+
 To add new pipeline transformation operations to Maestro: instructions TBD.  
 
 ---
