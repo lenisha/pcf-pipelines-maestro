@@ -1,0 +1,37 @@
+---
+- op: remove
+  path: /jobs/name=MAIN_JOB_NAME_GOES_HERE/task=apply-changes
+
+- op: add
+  path: /resources/-
+  value:
+    name: pcf-pipelines-maestro
+    type: git
+    source:
+     uri: {{maestro_project_url}}
+     private_key: {{git_private_key}}
+
+- op: add
+  path: /jobs/-
+  value:
+    name: apply-changes
+    plan:
+    - get: pcf-pipelines
+    - get: pcf-pipelines-maestro
+    - get: RESOURCE_NAME_GOES_HERE
+      passed:
+      - PREVIOUS_JOB_NAME_GOES_HERE
+
+    - task: wait-opsman-clear-running-tasks
+      file: pcf-pipelines-maestro/tasks/utils/wait-opsman-clear-running-tasks/task.yml
+      params:
+        OPSMAN_USERNAME: {{opsman_admin_username}}
+        OPSMAN_PASSWORD: {{opsman_admin_password}}
+        OPSMAN_URI: {{opsman_uri}}
+
+    - task: apply-changes
+      file: pcf-pipelines/tasks/apply-changes/task.yml
+      params:
+        OPSMAN_USERNAME: {{opsman_admin_username}}
+        OPSMAN_PASSWORD: {{opsman_admin_password}}
+        OPSMAN_URI: {{opsman_uri}}
