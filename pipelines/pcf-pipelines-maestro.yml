@@ -17,4 +17,4 @@ jobs:
     trigger: true
   - get: pcf-pipelines
   - task: conduct-updates-to-pipelines
-    file: ./pcf-pipelines-maestro/tasks/maestro/task.yml
+    file: pcf-pipelines-maestro/tasks/maestro/task.yml
