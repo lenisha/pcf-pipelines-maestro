@@ -28,7 +28,7 @@ function setBuildpacksUpgradePipelines() {
             exit 1
         else
             echo "Adding parameters for [$previousBPName,$previousBPVersion] to yaml patch file."
-            sed "s/BP_NAME_CANDIDATE/$previousBPName/g" ./patches/opsfiles/buildpack-entry-template.yml > ./tmpBuildpackPatch.yml
+            sed "s/BP_NAME_CANDIDATE/$previousBPName/g" ./operations/opsfiles/buildpack-entry-template.yml > ./tmpBuildpackPatch.yml
             sed -i "s/BP_VERSION_PARAM_NAME_CANDIDATE/$previousBPEntryKey/g" ./tmpBuildpackPatch.yml
             echo "Adding parameters for [$bpName,$bpEntryValue] to yaml patch file."
             sed -i "s/BP_NAME_CURRENT/$bpName/g" ./tmpBuildpackPatch.yml
@@ -45,7 +45,7 @@ function setBuildpacksUpgradePipelines() {
                 cp ./buildpack-upgrade-final.yml ./buildpack-upgrade.yml
             else
                 echo "Applying globs config for buildpack [$baseBpName]"
-                cp ./patches/opsfiles/buildpack-globs-entries.yml ./add-buildpack-globs.yml
+                cp ./operations/opsfiles/buildpack-globs-entries.yml ./add-buildpack-globs.yml
                 sed -i "s/BP_NAME_CURRENT/$bpName/g" ./add-buildpack-globs.yml
                 sed -i "s/BP_NAME_CANDIDATE/$previousBPName/g" ./add-buildpack-globs.yml
                 sed -i "s/BP_GLOBS/$buildpackGlobs/g" ./add-buildpack-globs.yml

@@ -4,18 +4,18 @@ set -e
 
 cd ./pcf-pipelines-maestro
 
-source ./patches/patches.sh
-source ./tasks/maestro/scripts/concourse.sh
-source ./tasks/maestro/scripts/tools.sh
-source ./tasks/maestro/scripts/opsmgr.sh
-source ./tasks/maestro/scripts/tiles.sh
-source ./tasks/maestro/scripts/buildpacks.sh
-source ./tasks/maestro/scripts/stemcell.sh
+source ./operations/operations.sh
+for script in ./operations/scripts/*.sh; do
+  source $script
+done
+for script in ./tasks/maestro/scripts/*.sh; do
+  source $script
+done
 
 previous_concourse_url=""
 
 # Process pipelines YAML patches that will apply to all foundations
-# See function definition in ./patches/patches.sh
+# See function definition in ./operations/operations.sh
 processPipelinePatchesForAllFoundations
 
 for foundation in ./foundations/*.yml; do
@@ -41,7 +41,7 @@ for foundation in ./foundations/*.yml; do
     # Login into the corresponding Concourse team for the foundation (see ./tasks/maestro/scripts/concourse.sh)
     loginConcourseTeam "$cc_url" "$cc_user" "$cc_pass" "$foundation_name"
 
-    # Process pipelines YAML patches for each foundation according to its configuration (see ./tasks/patches/patches.sh)
+    # Process pipelines YAML patches for each foundation according to its configuration (see ./tasks/operations/operations.sh)
     processPipelinePatchesPerFoundation "$foundation" "$iaasType"
 
     # ***** Pipeline for Ops-Manager Upgrades ***** (see ./tasks/maestro/scripts/opsmgr.sh)

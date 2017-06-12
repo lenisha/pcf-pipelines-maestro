@@ -49,8 +49,8 @@ BoM_tile_ERT_product_version: 1.10.*
 
 
 # ======== SECTION 2 - Pipelines customization options =========================
-# These parameters control which patches (from ./patches/patches.sh) get applied
-# to this foundation's pipelines.
+# These parameters control which patches (from ./operations/operations.sh) get applied
+# to this foundation's pipelines. Acceptable values: true or false
 gated-Apply-Changes-Job: false
 
 

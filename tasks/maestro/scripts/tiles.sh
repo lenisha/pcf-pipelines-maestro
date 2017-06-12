@@ -13,7 +13,7 @@ function setTilesUpgradePipelines() {
     tileEntryValue=$(echo "$tileEntry" | cut -d ":" -f 2 | tr -d " ")
     tile_name=$(echo "$tileEntryKey" | cut -d "_" -f 3)
     resource_name=$(grep "resource_name" ./common/pcf-tiles/$tile_name.yml | cut -d ":" -f 2 | tr -d " ")
-    # Pipeline template file ./upgrade-tile-template.yml is produced by processPipelinePatchesPerFoundation() in ./patches/patches.sh
+    # Pipeline template file ./upgrade-tile-template.yml is produced by processPipelinePatchesPerFoundation() in ./operations/operations.sh
     cp ./upgrade-tile-template.yml ./upgrade-tile.yml
     # customize upgrade tile job name
     sed -i "s/upgrade-tile/upgrade-$tile_name-tile/g" ./upgrade-tile.yml
