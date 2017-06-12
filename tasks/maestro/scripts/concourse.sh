@@ -7,7 +7,7 @@ function parseConcourseCredentials() {
   export cc_main_pass=$(grep "concourse_main_pass" $foundation_params_file | cut -d ":" -f 2 | tr -d " ")
   export cc_user=$(grep "concourse_team_userid" $foundation_params_file | cut -d ":" -f 2 | tr -d " ")
   export cc_pass=$(grep "concourse_team_pass" $foundation_params_file | cut -d ":" -f 2 | tr -d " ")
-
+  export skip_ssl_verification=$(grep "concourse_skip_ssl_verification" $foundation_params_file | cut -d ":" -f 2 | tr -d " ")
 }
 
 function loginConcourseTeam() {
@@ -16,9 +16,10 @@ function loginConcourseTeam() {
     userid="${2}"
     passwd="${3}"
     team="${4}"
-
+    skip_ssl_verification="${5}"
     user_auth_params="-u $userid -p $passwd"
     [ "${userid,,}" == "none" ] && user_auth_params=" ";
+    [ "${skip_ssl_verification,,}" == "true" ] && user_auth_params="$user_auth_params -k";
     echo "Performing FLY login to team [$team] of Concourse server $cc_url"
     ./fly -t $team login -c $concourse_url $user_auth_params -n "$team"
 

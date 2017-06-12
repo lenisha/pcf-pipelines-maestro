@@ -35,11 +35,11 @@ for foundation in ./foundations/*.yml; do
     previous_concourse_url=$cc_url     # save current concourse url
 
     # login into Concourse main team (see ./tasks/maestro/scripts/concourse.sh)
-    loginConcourseTeam "$cc_url" "$cc_main_user" "$cc_main_pass" "main"
+    loginConcourseTeam "$cc_url" "$cc_main_user" "$cc_main_pass" "main" "$skip_ssl_verification"
     # create concourse team for the foundation if not existing yet (see ./tasks/maestro/scripts/concourse.sh)
     createConcourseFoundationTeam "$foundation_name" "$cc_user" "$cc_pass" "main"
     # Login into the corresponding Concourse team for the foundation (see ./tasks/maestro/scripts/concourse.sh)
-    loginConcourseTeam "$cc_url" "$cc_user" "$cc_pass" "$foundation_name"
+    loginConcourseTeam "$cc_url" "$cc_user" "$cc_pass" "$foundation_name" "$skip_ssl_verification"
 
     # Process pipelines YAML patches for each foundation according to its configuration (see ./tasks/operations/operations.sh)
     processPipelinePatchesPerFoundation "$foundation" "$iaasType"

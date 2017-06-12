@@ -11,8 +11,11 @@ processPipelinePatchesPerFoundation() {
   cp ../pcf-pipelines/upgrade-tile/pipeline.yml ./upgrade-tile-template.yml
   cp ../pcf-pipelines/upgrade-ops-manager/$iaasType/pipeline.yml ./upgrade-opsmgr.yml
 
-  # *** GATED APPLY CHANGES patch ***
+  # *** GATED APPLY CHANGES patch - keep this entry before processUsePivnetReleasePatch ***
   processGatedApplyChangesJobPatch "$foundation" "$iaasType"
+
+  # Retrive pcf-pipelines from PivNet release. Controlled by flag use-pivnet-release
+  processUsePivnetReleasePatch "$foundation" "$iaasType"
 
 }
 
