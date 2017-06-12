@@ -58,7 +58,7 @@ gated-Apply-Changes-Job: false
 
 # *********** Credentials for Concourse Teams ***********
 # Concourse server url including protocol and port number if applicable (e.g. http://192.168.100.4:8080, http://myconcourse.domain.com)
-concourse_url: http://myconcourse.server.com
+concourse_url: http://192.168.100.4:8080
 # main team admin user ID. Use string NONE if running a local vagrant-based Concourse server
 concourse_main_userid: CHANGEME
 # main team admin password. Use string NONE if running a local vagrant-based Concourse server
@@ -134,5 +134,11 @@ dns: CHANGEME # DNS for the Ops Manager. e.g. 10.193.152.2
 ntp: CHANGEME # NTP for the Ops Manager. e.g. 10.193.152.2
 opsman_network: CHANGEME # Network for the Ops Manager. e.g. "VM Network"
 opsman_timeout_seconds: 1800 # Ops Manager timeout in seconds. e.g. 1800
+
+# *********** Parameters for Buildpacks Upgrade pipeline ***********
+# Credentials for Pivotal Cloud Foundry API login
+cf_api_uri: CHANGEME # API URI for CF
+cf_user: CHANGEME # CF API admin username
+cf_password: CHANGEME # CF API admin Password
 
 # ============================================
