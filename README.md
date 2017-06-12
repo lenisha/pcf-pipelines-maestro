@@ -97,6 +97,7 @@ To enable an out-of-the-box pipeline customization rule:
 
 1. in `SECTION 2` of that file, enable the desired pipeline transformation entry (i.e. set it to `true`).  
    Available pipeline customization entries so far (more to come soon):  
+   - `use-pivnet-release`: changes the source of the `pcf-pipelines` release to be the Pivotal Network (a.k.a. PivNet) releases repository instead of downloading it straight from GitHub.  
    - `gated-Apply-Changes-Job`: creates a separate "Apply Changes" job for OpsMgr and Tiles upgrade pipelines (instead of the `pcf-pipelines` OOTB in-line apply-changes task that is executed for every single tile upgrade). This provides more control for operators to decide when to Apply Changes for one or more upgrades (or to apply changes in bulk after multiple tile upgrade uploads to Ops Mgr).
 
 1. Commit and push the file changes to you Maestro git repository  

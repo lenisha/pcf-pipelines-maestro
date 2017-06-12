@@ -19,7 +19,8 @@ function prepareTools() {
     fi
 
     echo "Preparing YAML PATCH tool"
-    wget -O yaml_patch https://github.com/krishicks/yaml-patch/releases/download/v0.0.5/yaml_patch_linux && chmod 755 yaml_patch
+    wget -O yaml_patch https://github.com/krishicks/yaml-patch/releases/download/v0.0.7/yaml_patch_linux && chmod 755 yaml_patch
+
 
 
 }

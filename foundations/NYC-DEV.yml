@@ -74,7 +74,7 @@ concourse_team_pass: CHANGEME
 # *********** IaaS name for which stemcell to download ***********
 # See https://github.com/pivotal-cf/pcf-product-stemcell-downloader/
 # for the list of allowed IaaS names (e.g. aws|openstack|vcloud|vsphere|azure|gcp)
-iaas_type: vsphere
+iaas_type: CHANGEME
 
 # ******** Credentials for Operations Manager - for both tiles and OpsMan pipelines ***********
 # These are used for uploading, staging and deploying product files on Operations Manager.
