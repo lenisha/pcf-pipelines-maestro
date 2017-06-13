@@ -14,8 +14,8 @@ processPipelinePatchesPerFoundation() {
   # *** GATED APPLY CHANGES patch - keep this entry before processUsePivnetReleasePatch ***
   processGatedApplyChangesJobPatch "$foundation" "$iaasType"
 
-  # Retrive pcf-pipelines from PivNet release. Controlled by flag use-pivnet-release
-  processUsePivnetReleasePatch "$foundation" "$iaasType"
+  # Retrive pcf-pipelines from PivNet release. Controlled by flag pcf-pipelines-source
+  processPcfPipelinesSourcePatch "$foundation" "$iaasType"
 
 }
 
