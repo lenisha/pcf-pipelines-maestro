@@ -24,7 +24,7 @@ for foundation in ./foundations/*.yml; do
     foundation_name="${foundation_fullname%.*}"
     echo "Processing team deletion for foundation [$foundation_name]"
 
-    parseConcourseCredentials "$foundation"
+    parseConcourseCredentials "./common/credentials.yml" "true" 
 
     prepareTools "$cc_url" "$previous_concourse_url"
 

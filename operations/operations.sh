@@ -6,10 +6,10 @@ processPipelinePatchesPerFoundation() {
   foundation="${1}"
   iaasType="${2}"
 
-  echo "Preparing pipeline files for upgrade-tile and upgrade-opsmgr pipelines template."
-  # the presence of those two files in the maestro root dir is expected by maestro scripts
-  cp ../pcf-pipelines/upgrade-tile/pipeline.yml ./upgrade-tile-template.yml
-  cp ../pcf-pipelines/upgrade-ops-manager/$iaasType/pipeline.yml ./upgrade-opsmgr.yml
+  echo "Foundation pipelines patches: preparing template files for upgrade-tile and upgrade-opsmgr."
+  # the presence of these two files in the maestro root dir is expected by maestro scripts
+  cp ./globalPatchFiles/upgrade-ops-manager/$iaasType/pipeline.yml ./upgrade-opsmgr.yml
+  cp ./globalPatchFiles/upgrade-tile/pipeline.yml ./upgrade-tile-template.yml
 
   # *** GATED APPLY CHANGES patch - keep this entry before processUsePivnetReleasePatch ***
   processGatedApplyChangesJobPatch "$foundation" "$iaasType"
@@ -23,5 +23,18 @@ processPipelinePatchesPerFoundation() {
 # Typically, the execution of these scripts should be controlled by a flag in
 # the ./common/credentials file.
 processPipelinePatchesForAllFoundations() {
-   echo "No global pipeline patches for now."
+
+  echo "Global pipeline patches processing."
+
+  echo "Preparing files for all upgrade-ops-manager pipelines"
+  mkdir -p ./globalPatchFiles/upgrade-ops-manager
+  cp -R ../pcf-pipelines/upgrade-ops-manager/* ./globalPatchFiles/upgrade-ops-manager/.
+
+  echo "Preparing files for upgrade-tile pipelines"
+  mkdir -p ./globalPatchFiles/upgrade-tile
+  cp ../pcf-pipelines/upgrade-tile/* ./globalPatchFiles/upgrade-tile/.
+
+  echo "Processing Pivotal Releases source patch"
+  processPivotalReleasesSourcePatch "./common/credentials.yml"
+
 }

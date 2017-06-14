@@ -32,7 +32,7 @@ _For quick tests in development environments (with no need to fork Maestro repo)
   `git clone https://github.com/pivotalservices/pcf-pipelines-maestro.git`    
   `cd pcf-pipelines-maestro`  
 
-1. Edit `./common/credentials.yml` and fill out all of its parameters following instructions in the file.  
+1. Edit `./common/credentials.yml` and fill out all of its parameters for *SECTION A* following instructions in the file.  
 
 1. Edit `./foundations/NYC-DEV.yml` and fill out all parameters for *SECTION 3*.  
    Leave parameters from sections 1 and 2 as-is for now. We will cover these later.
@@ -95,10 +95,10 @@ To enable an out-of-the-box pipeline customization rule:
 
 1. edit the corresponding foundation configuration file (e.g. `./foundations/NYC-DEV.yml`)  
 
-1. in `SECTION 2` of that file, enable the desired pipeline transformation entry (i.e. set it to `true`).  
-   Available pipeline customization entries so far (more to come soon):  
-   - `use-pivnet-release`: changes the source of the `pcf-pipelines` release to be the Pivotal Network (a.k.a. PivNet) releases repository instead of downloading it straight from GitHub.  
-   - `gated-Apply-Changes-Job`: creates a separate "Apply Changes" job for OpsMgr and Tiles upgrade pipelines (instead of the `pcf-pipelines` OOTB in-line apply-changes task that is executed for every single tile upgrade). This provides more control for operators to decide when to Apply Changes for one or more upgrades (or to apply changes in bulk after multiple tile upgrade uploads to Ops Mgr).
+1. in `SECTION 2` of that file, update the desired pipeline transformation entries.  
+   Available pipeline customization entries so far (more to come):  
+   - `pcf-pipelines-source`: changes the source of the `pcf-pipelines` release.  Accepted values: `git` (default, from the repository defined in property _pcf_pipelines_project_url_ in _/common/credentials.yml_), `pivnet` (for Pivotal Network releases repository).  
+   - `gated-Apply-Changes-Job`: when set to `true`, creates a separate "Apply Changes" job for OpsMgr and Tiles upgrade pipelines (instead of the `pcf-pipelines` OOTB in-line apply-changes task that is executed for every single tile upgrade). This provides more control for operators to decide when to Apply Changes for one or more upgrades (or to apply changes in bulk after multiple tile upgrade uploads to Ops Mgr).
 
 1. Commit and push the file changes to you Maestro git repository  
 

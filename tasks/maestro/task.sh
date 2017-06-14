@@ -12,7 +12,16 @@ for script in ./tasks/maestro/scripts/*.sh; do
   source $script
 done
 
-previous_concourse_url=""
+processDebugEnablementConfig "./common/credentials.yml"  # determine if script debug needs to be enabled
+
+previous_concourse_url="" # initialize current concourse url variable
+
+parseConcourseCredentials "./common/credentials.yml" "true"
+
+# prepare Concourse FLY cli in the task container (see ./tasks/maestro/scripts/tools.sh)
+prepareTools "$cc_url"
+
+loginConcourseTeam "$cc_url" "$cc_main_user" "$cc_main_pass" "main" "$skip_ssl_verification"
 
 # Process pipelines YAML patches that will apply to all foundations
 # See function definition in ./operations/operations.sh
@@ -28,10 +37,10 @@ for foundation in ./foundations/*.yml; do
     echo "Processing pipelines for foundation [$foundation_name] with IaaS [$iaasType]"
 
     # get Concourse credentials from foundation file (see ./tasks/maestro/scripts/concourse.sh)
-    parseConcourseCredentials "$foundation"
+    parseConcourseCredentials "$foundation" "false"
+    parseConcourseFoundationCredentials "$foundation"
 
-    # prepare Concourse FLY cli in the task container (see ./tasks/maestro/scripts/tools.sh)
-    prepareTools "$cc_url" "$previous_concourse_url"
+    concourseFlySync "$cc_url" "$previous_concourse_url" "main"
     previous_concourse_url=$cc_url     # save current concourse url
 
     # login into Concourse main team (see ./tasks/maestro/scripts/concourse.sh)

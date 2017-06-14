@@ -1,0 +1,49 @@
+---
+- op: add
+  path: /resources/-
+  value:
+    name: s3-RESOURCENAME
+    type: s3
+    source:
+      bucket: {{s3-bucket}}
+      access_key_id: {{s3-access-key-id}}
+      secret_access_key: {{s3-secret-access-key}}
+      regexp: "RESOURCENAME/RESOURCENAME_v({{PRODUCTVERSION}}).PRODUCTEXTENSION"
+      region_name: {{s3-region-name}}
+
+- op: add
+  path: /resources/-
+  value:
+    name: pivnet-RESOURCENAME
+    type: pivnet
+    check_every: {{pivnet_poll_interval}}
+    source:
+      api_token: {{pivnet_token}}
+      product_slug: PRODUCTSLUG
+      product_version: PRODUCTVERSION
+      sort_by: semver
+
+- op: add
+  path: /jobs/-
+  value:
+    name: upload-RESOURCENAME-to-s3
+    plan:
+    - get: pivnet-RESOURCENAME
+      trigger: true
+    - task: prepare-RESOURCENAME-files
+      config:
+        platform: linux
+        image_resource:
+          type: docker-image
+          source: {repository: czero/cflinuxfs2}
+        outputs:
+        - name: RESOURCENAME
+        run:
+          path: sh
+          args:
+          - -exc
+          - |
+            cp pivnet-RESOURCENAME/*.PRODUCTEXTENSION RESOURCENAME/RESOURCENAME_vPRODUCTVERSION.PRODUCTEXTENSION
+            find .
+    - put: s3-RESOURCENAME
+      params: { file: "RESOURCENAME/*.PRODUCTEXTENSION" }
