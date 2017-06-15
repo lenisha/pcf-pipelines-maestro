@@ -42,12 +42,14 @@ createPivNetToS3Pipeline() {
       opsmgr_product_version=$(grep "BoM_OpsManager_product_version" $templateFoundationFilePath | grep "^[^#;]" | cut -d ":" -f 2 | tr -d " ")
       set -e
       if [ -n "${opsmgr_product_version}" ]; then
-          cp ./operations/opsfiles/pivnet-to-s3-bucket-entry.yml ./pivnet-to-s3-bucket-entry.yml
-          sed -i "s/PRODUCTSLUG/ops-manager/g" ./pivnet-to-s3-bucket-entry.yml
+          cp ./operations/opsfiles/pivnet-to-s3-bucket-opsmgr-entry.yml ./pivnet-to-s3-bucket-entry.yml
           sed -i "s/PRODUCTVERSION/$opsmgr_product_version/g" ./pivnet-to-s3-bucket-entry.yml
-          # FIXME - this is specific for vsphere - add support for all IaaSes here
-          sed -i "s/PRODUCTEXTENSION/ova/g" ./pivnet-to-s3-bucket-entry.yml
-          sed -i "s/RESOURCENAME/ops-manager/g" ./pivnet-to-s3-bucket-entry.yml
+
+          # determine which IaaSes are used in the foundations files
+          determineIaaSesInUse
+
+          # remove IaaS not in use from OpsMgr files download job in Pivnet-To-S3 pipeline operations file
+          removeIaaSFromPivnetToS3Pipeline
 
           echo "Adding OpsManager, version [$opsmgr_product_version] to PivNet-to-S3 pipeline"
           cp ./pivnet-to-s3-bucket.yml ./pivnet-to-s3-bucket-tmp.yml
@@ -55,7 +57,6 @@ createPivNetToS3Pipeline() {
       else
           echo "No configuration found for Ops Mgr version in the BoM for [$templateFoundationFile], skipping it for the Pivnet-to-S3 pipeline."
       fi
-
       # process tiles
       set +e
       grep "BoM_tile_" $templateFoundationFilePath | grep "^[^#;]" > ./listOfEnabledTiles.txt
@@ -63,7 +64,7 @@ createPivNetToS3Pipeline() {
       cat ./listOfEnabledTiles.txt | while read tileEntry
       do
         # make a copy of the template file for each tile
-        cp ./operations/opsfiles/pivnet-to-s3-bucket-entry.yml ./pivnet-to-s3-bucket-entry.yml
+        cp ./operations/opsfiles/pivnet-to-s3-bucket-tile-entry.yml ./pivnet-to-s3-bucket-entry.yml
 
         tileEntryKey=$(echo "$tileEntry" | cut -d ":" -f 1 | tr -d " ")
         tileEntryValue=$(echo "$tileEntry" | cut -d ":" -f 2 | tr -d " ")  # product version
@@ -102,4 +103,38 @@ createPivNetToS3Pipeline() {
       echo "Error creating the PivNet-to-S3 pipeline. Parameter 'template-foundation-config-file' from /common/credentials.yml points to foundation [$templateFoundationFile], whose config file is not present under /foundations folder."
       exit
   fi
+}
+
+determineIaaSesInUse() {
+  # determine which IaaSes are used in the foundations files
+  # iterates through foundations config files and creates env variables for the corresponding IaaS
+  for foundation in ./foundations/*.yml; do
+      iaasInUse=$(grep "iaas_type" $foundation | cut -d ":" -f 2 | tr -d " ")
+      variableName="maestro_IaaSinUse_${iaasInUse}"
+      export "${variableName}"="true"
+  done
+}
+
+removeIaaSFromPivnetToS3Pipeline() {
+
+  # remove IaaS not in use from OpsMgr files download job in Pivnet-To-S3 pipeline operations file
+
+  # get list of IaaSes from ops-mgr metadata file
+  set +e
+  grep -v -e '^[[:space:]]*$' ./common/opsmgr-metadata/globs.yml | grep "^[^#;]" > ./listOfIaaS.txt
+  set -e
+  # iterate through list of IaaSes and check for presence of env variable maestro_IaaSinUse_${iaasEntry}
+  cat ./listOfIaaS.txt | while read iaasLineEntry
+  do
+      iaasEntry=$(echo "$iaasLineEntry" | cut -d ":" -f 1 | tr -d " ")
+      variableName="maestro_IaaSinUse_${iaasEntry}"
+      if [ -z "${!variableName}" ]; then
+          # IaaS not in use - remove all corresponding sections from operations file
+          sed -i "/# ${iaasEntry}+++/,/# ${iaasEntry}---/d" ./pivnet-to-s3-bucket-entry.yml
+      else
+          # IaaS is in use - remove only corresponding marker lines from operations file
+          sed -i "/# ${iaasEntry}+++/d" ./pivnet-to-s3-bucket-entry.yml
+          sed -i "/# ${iaasEntry}---/d" ./pivnet-to-s3-bucket-entry.yml
+      fi
+  done
 }
