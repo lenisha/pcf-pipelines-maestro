@@ -32,7 +32,7 @@ for foundation in ./foundations/*.yml; do
     # parse foundation name
     foundation_fullname=$(basename "$foundation")
     foundation_name="${foundation_fullname%.*}"
-    iaasType=$(grep "iaas_type" $foundation | cut -d " " -f 2)
+    iaasType=$(grep "iaas_type" $foundation | cut -d ":" -f 2 | tr -d " ")
 
     echo "Processing pipelines for foundation [$foundation_name] with IaaS [$iaasType]"
 

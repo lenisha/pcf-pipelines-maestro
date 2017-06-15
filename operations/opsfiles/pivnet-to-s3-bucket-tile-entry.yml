@@ -8,7 +8,7 @@
       bucket: {{s3-bucket}}
       access_key_id: {{s3-access-key-id}}
       secret_access_key: {{s3-secret-access-key}}
-      regexp: "RESOURCENAME/RESOURCENAME_v({{PRODUCTVERSION}}).PRODUCTEXTENSION"
+      regexp: "RESOURCENAME/RESOURCENAME_v(PRODUCTVERSION).PRODUCTEXTENSION"
       region_name: {{s3-region-name}}
 
 - op: add
@@ -36,6 +36,8 @@
         image_resource:
           type: docker-image
           source: {repository: czero/cflinuxfs2}
+        inputs:
+        - name: pivnet-RESOURCENAME
         outputs:
         - name: RESOURCENAME
         run:
@@ -43,7 +45,9 @@
           args:
           - -exc
           - |
-            cp pivnet-RESOURCENAME/*.PRODUCTEXTENSION RESOURCENAME/RESOURCENAME_vPRODUCTVERSION.PRODUCTEXTENSION
+            find .
+            versionNumber=$(cat ./pivnet-RESOURCENAME/version | cut -d "#" -f 1 | tr -d " ")
+            cp pivnet-RESOURCENAME/*.PRODUCTEXTENSION RESOURCENAME/RESOURCENAME_v${versionNumber}.PRODUCTEXTENSION
             find .
     - put: s3-RESOURCENAME
       params: { file: "RESOURCENAME/*.PRODUCTEXTENSION" }
