@@ -1,0 +1,34 @@
+[ req ]
+distinguished_name     = req_distinguished_name
+req_extensions         = server_req_extensions
+prompt                 = no
+
+[ req_distinguished_name ]
+C                      = US  # Only 2 characters
+ST                     = CA    # Only 2 characters
+L                      = SF
+O                      = Pivotal
+OU                     = Cloud Foundry
+CN                     = 
+emailAddress           = <Your email address>
+
+####################################################################
+[ server_req_extensions ]
+
+keyUsage                    = critical, digitalSignature, keyEncipherment
+subjectAltName              = @alternate_names
+basicConstraints            = CA:FALSE
+
+####################################################################
+[ alternate_names ]
+
+DNS.1  = <SAN 1>
+DNS.2  = <SAN 2>
+DNS.3  = <SAN 3>
+DNS.4  = <SAN 4>
+
+## Standard Spring Cloud Services domains
+# DNS.1  = *.sys.<domain>
+# DNS.2  = *.apps.<domain>
+# DNS.3  = *.login.sys.<domain>
+# DNS.4  = *.uaa.sys.<domain>

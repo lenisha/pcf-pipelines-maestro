@@ -1,0 +1,12 @@
+---
+- op: replace
+  path: /resources/name=pivnet-opsmgr
+  value:
+    name: pivnet-opsmgr
+    type: s3
+    source:
+      bucket: {{s3-bucket}}
+      access_key_id: {{s3-access-key-id}}
+      secret_access_key: {{s3-secret-access-key}}
+      regexp: "ops-manager/ops-manager_v({{opsman_major_minor_version}}).*"
+      region_name: {{s3-region-name}}
