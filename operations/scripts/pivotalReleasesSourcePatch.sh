@@ -20,7 +20,6 @@ processPivotalReleasesSourcePatch() {
 
       # Generate PivNet to S3 main pipeline
       createPivNetToS3Pipeline "$configurationsFile"
-
   fi
 }
 
