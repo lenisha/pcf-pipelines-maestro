@@ -120,7 +120,7 @@ vcenter_cluster: Cluster # vCenter Cluster. e.g. Cluster
 vcenter_datastore: LUN01 # vCenter Datastore. e.g. LUN01
 vcenter_resource_pool:  # vCenter Resource Pool. e.g. RP01
 opsman_vm_folder: pcf_vms # vCenter Folder for Ops Mgr VM. e.g. /vm/env1
-opsman_ip: 10.193.56.11 # IP Address for the Ops Manager. e.g. 10.193.152.6
+opsman_ip: 10.193.56.6 # IP Address for the Ops Manager. e.g. 10.193.152.6
 netmask: 255.255.255.0 # Subnet Mask for the Ops Manager. e.g. 255.255.255.0
 gateway: 10.193.56.1 # Gateway IP Address for the Ops Manager. e.g. 10.193.152.1
 dns: 10.193.56.2 # DNS for the Ops Manager. e.g. 10.193.152.2

@@ -3,7 +3,7 @@ function prepareTools() {
 
     # Download fly CLI from concourse server if not done yet
     echo "Downloading FLY from Concourse server $current_concourse_url"
-    wget -O fly $current_concourse_url/api/v1/cli?arch=amd64\&platform=linux
+    wget --no-check-certificate -O  fly $current_concourse_url/api/v1/cli?arch=amd64\&platform=linux
     chmod +x ./fly
     echo "FLY version in use:"
     ./fly --version

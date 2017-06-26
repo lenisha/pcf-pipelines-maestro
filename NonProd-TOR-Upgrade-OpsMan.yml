@@ -56,7 +56,7 @@ resources:
       Wkqoo4+nbEkwtnxS4G/xuFPLF4UhsIFR2cz7EVBThixIrraVH2UIzc3RpYnS3iKY
       8OhfsvB2mXbJ8ldYp9+DxKYqEiKfbgYEib20n/EC+Qz3a/u8/AvOeV5jJA==
       -----END RSA PRIVATE KEY-----
-    uri: git@github.com:pivotal-cf/pcf-pipelines.git
+    uri: https://github.com/lenisha/pcf-pipelines.git
 - name: pivnet-opsmgr
   type: pivnet
   source:
